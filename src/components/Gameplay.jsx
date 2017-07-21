@@ -5,9 +5,8 @@ export default (props) => {
   return (
     <div className="row">
       <div className="col-sm-6">
-
         <div className="text-center h2" style={{letterSpacing: 20}}>
-          {[...props.word].map(letter => props.guessedChars.indexOf(letter) > -1? letter : '_')}
+          {[...props.word].map(letter => props.guessedChars.indexOf(letter) > -1 ? letter : '_')}
         </div>
         <br /> <br />
         <form onSubmit={e => props.handleSubmit(e)}>
@@ -28,8 +27,8 @@ export default (props) => {
       </div>
       <div className="col-sm-6">
         <div>
-          <p>Nieudane próby: { props.numberOfUserTries } </p>
-          <p>Pozostało prób: { props.triesLeft } </p>
+          <p>Nieudane próby: <span className="badge">{ props.numberOfUserTries }</span></p>
+          <p>Pozostało prób: <span className="badge">{ props.triesLeft } </span></p>
           <p>Użyte znaki: { props.missedChars.join(', ') } </p>
         </div>
       </div>

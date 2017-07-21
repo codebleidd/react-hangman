@@ -23,11 +23,11 @@ export default class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.getWord = this.getWord.bind(this);
     this.checkLetterOccurance = this.checkLetterOccurance.bind(this);
-    // this.updateGameStatus = this.updateGameStatus.bind(this);
+    this.updateGameStatus = this.updateGameStatus.bind(this);
     this.restartGame = this.restartGame.bind(this);
     this.state = App.initialState();
-    // this.getWord('easy');
   }
+  /** Downaload word from file */
   getWord(level) {
     axios.get('words.json')
       .then(resp => {
@@ -44,11 +44,13 @@ export default class App extends React.Component {
     });
   }
   handleSubmit(event) {
+    // Case: no tries left
     if (this.state.triesLeft === 0) {
       event.preventDefault();
       return;
     }
     this.setState((prevState) => {
+      // Case: wrong letter submitted
       if (!this.checkLetterOccurance(prevState.currentChar) && prevState.missedChars.indexOf(prevState.currentChar) === -1) {
         return {
           missedChars: prevState.missedChars.concat(this.state.currentChar),
@@ -57,6 +59,7 @@ export default class App extends React.Component {
           numberOfUserTries: prevState.numberOfUserTries + 1,
         };
       }
+      // Case: correct letter guessed
       if (this.checkLetterOccurance(prevState.currentChar) && prevState.guessedChars.indexOf(prevState.currentChar) === -1) {
         return {
           guessedChars: prevState.guessedChars.concat(this.state.currentChar),
@@ -66,6 +69,7 @@ export default class App extends React.Component {
     }, this.updateGameStatus);
     event.preventDefault();
   }
+  // Checks if the user has any retries left or guessed all letters
   updateGameStatus() {
     this.setState(prevState => {
       if (_.difference([...this.state.word], this.state.guessedChars).length === 0) {
